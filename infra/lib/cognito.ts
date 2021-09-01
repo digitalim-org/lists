@@ -15,9 +15,6 @@ export class CognitoStack extends Stack {
         username: true,
         phone: false,
       },
-      autoVerify: {
-        phone: true,
-      },
       mfa: Mfa.OFF,
       passwordPolicy: {
         minLength: 12,
@@ -26,5 +23,7 @@ export class CognitoStack extends Stack {
         replyTo: "pierre.pirault@outlook.com",
       },
     });
+
+    this.userPool.addClient("WebClient");
   }
 }
