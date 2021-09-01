@@ -1,12 +1,14 @@
-import { Stack, StackProps, Construct } from "@aws-cdk/core";
+import { Stack, StackProps, Construct, RemovalPolicy } from "@aws-cdk/core";
 import { Mfa, UserPool } from "@aws-cdk/aws-cognito";
 import { APP_NAME } from "../config";
 
 export class CognitoStack extends Stack {
+  public readonly userPool: UserPool;
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    new UserPool(this, `${APP_NAME}-CognitoUserPool`, {
+    this.userPool = new UserPool(this, `${APP_NAME}-CognitoUserPool`, {
+      removalPolicy: RemovalPolicy.DESTROY,
       selfSignUpEnabled: true,
       signInAliases: {
         email: true,

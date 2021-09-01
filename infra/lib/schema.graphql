@@ -1,0 +1,83 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+"The status of an Item"
+enum ItemStatus {
+  "The Item still needs to be done"
+  ACTIVE
+  "The Item has been completed"
+  DONE
+}
+
+"Todo contains Items"
+type Todo {
+  "Generated automatically"
+  createdAt: String!
+  "Generated automatically"
+  id: ID!
+  "List of Items"
+  items: [Item]
+  "Title of the Todo"
+  title: String!
+}
+
+"An Item in a Todo"
+type Item {
+  "Generated automatically"
+  id: ID!
+  "The status of the Item"
+  status: ItemStatus!
+  "The Item text"
+  text: String!
+}
+
+"Input to a GetItems Query"
+input GetItemsInput {
+  "The id of the Todo"
+  todoID: ID!
+}
+
+"Input to a AddTodo Mutation"
+input AddTodoInput {
+  "The epoch time the Todo is created"
+  createdAt: String!
+  "The id of the Todo"
+  id: ID!
+  "List of Items to add to the new Todo"
+  items: [String]
+  "Title of the new Todo"
+  title: String!
+}
+
+"Input to a AddItem Mutation"
+input AddItemInput {
+  "The id of the Item"
+  id: ID!
+  "The Item text"
+  text: String!
+}
+
+"Input to a MarkDone Mutation"
+input MarkDoneInput {
+  "The id of the Item to mark DONE"
+  itemID: ID!
+}
+
+"Mutations for Todo and Item"
+type Mutation {
+  "addTodo creates a new Todo"
+  addTodo(input: AddTodoInput!): Todo
+  "addItem creates a new Item"
+  addItem(input: AddItemInput!): Item
+  "markDone sets the status of an Item to DONE"
+  markDone(input: MarkDoneInput!): Item
+}
+"Queries for Todo and Item"
+type Query {
+  "getTodos gets all the user's Todos"
+  getTodos: [Todo]
+  "getItems gets all the Items for a given Todo"
+  getItems(input: GetItemsInput!): [Item]
+}
