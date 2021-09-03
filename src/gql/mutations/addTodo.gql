@@ -1,6 +1,5 @@
 mutation AddTodo($title: String!, $listID: String) {
   addTodo(input: { title: $title, listID: $listID }) {
-    userID
     listID
     itemID
     title

@@ -52,19 +52,20 @@ const TodosListComponent = () => {
 
           return (
             <Accordion key={listID}>
-              {todoList.map((todo, idx) => (
-                <Fragment key={todo.itemID}>
-                  {idx === 0 ? (
-                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                      <TodoComponent {...todo} />
-                    </AccordionSummary>
-                  ) : (
-                    <AccordionDetails>
-                      <TodoComponent {...todo} />
-                    </AccordionDetails>
-                  )}
-                </Fragment>
-              ))}
+              {todoList.map((todo, idx) =>
+                idx === 0 ? (
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    key={todo.itemID}
+                  >
+                    <TodoComponent {...todo} />
+                  </AccordionSummary>
+                ) : (
+                  <AccordionDetails key={todo.itemID}>
+                    <TodoComponent {...todo} />
+                  </AccordionDetails>
+                )
+              )}
               <AddTodo listID={listID} />
             </Accordion>
           );

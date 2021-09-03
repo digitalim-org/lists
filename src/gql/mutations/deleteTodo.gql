@@ -1,0 +1,8 @@
+mutation DeleteTodo($itemID: String!) {
+  deleteTodo(input: { itemID: $itemID }) {
+    listID
+    itemID
+    title
+    status
+  }
+}

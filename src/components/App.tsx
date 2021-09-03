@@ -22,7 +22,7 @@ const App: React.FunctionComponent = () => {
         client.clearStore();
       }
     });
-  }, []);
+  });
 
   return authState === AuthState.SignedIn && user ? (
     <TodosList />

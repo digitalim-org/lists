@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from "react";
 import { useMutation } from "@apollo/client";
-import { TextField, IconButton } from "@material-ui/core";
+import { TextField, IconButton, CircularProgress } from "@material-ui/core";
 import { Add as AddIcon } from "@material-ui/icons";
 import { ADD_TODO, GET_TODOS } from "../../gql";
 import styles from "./AddTodo.module.css";
@@ -13,7 +13,7 @@ interface AddTodoProps {
 
 const AddTodo = ({ listID }: AddTodoProps) => {
   const [title, setTitle] = useState("");
-  const [addTodo, { data, loading, error }] = useMutation(ADD_TODO, {
+  const [addTodo, { loading, error }] = useMutation(ADD_TODO, {
     refetchQueries: [GET_TODOS],
   });
 
@@ -35,6 +35,7 @@ const AddTodo = ({ listID }: AddTodoProps) => {
 
   return (
     <form onSubmit={handleAddTodo} className={styles.addTodoListForm}>
+      {loading && <CircularProgress />}
       <TextField label="title" value={title} onChange={handleChangeTitle} />
       <IconButton type="submit">
         <AddIcon />

@@ -76,6 +76,15 @@ export class AppSyncStack extends Stack {
     );
 
     todosDataSource.createResolver({
+      typeName: "Query",
+      fieldName: "getTodos",
+      requestMappingTemplate: MappingTemplate.fromFile(
+        pathJoin(mappingTemplateDir, "getTodos.vtl")
+      ),
+      responseMappingTemplate: MappingTemplate.dynamoDbResultList(),
+    });
+
+    todosDataSource.createResolver({
       typeName: "Mutation",
       fieldName: "addTodo",
       requestMappingTemplate: MappingTemplate.fromFile(
@@ -85,10 +94,10 @@ export class AppSyncStack extends Stack {
     });
 
     todosDataSource.createResolver({
-      typeName: "Query",
-      fieldName: "getTodos",
+      typeName: "Mutation",
+      fieldName: "deleteTodo",
       requestMappingTemplate: MappingTemplate.fromFile(
-        pathJoin(mappingTemplateDir, "getTodos.vtl")
+        pathJoin(mappingTemplateDir, "deleteTodo.vtl")
       ),
       responseMappingTemplate: MappingTemplate.dynamoDbResultList(),
     });

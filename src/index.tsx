@@ -8,12 +8,14 @@ import {
   ApolloLink,
   createHttpLink,
 } from "@apollo/client";
+import { onError } from "@apollo/client/link/error";
 import { Auth } from "aws-amplify";
 import cfg from "./aws-exports";
 // import { Rehydrated } from "aws-appsync-react";
 import "./index.css";
 import App from "./components/App";
 import reportWebVitals from "./reportWebVitals";
+import { GraphQLError } from "graphql";
 
 const url = cfg.graphqlEndpoint;
 const region = cfg.aws_region;
@@ -30,7 +32,18 @@ const auth: AuthOptions = {
 
 const httpLink = createHttpLink({ uri: url });
 
-const link = ApolloLink.from([createAuthLink({ url, region, auth }), httpLink]);
+const link = ApolloLink.from([
+  onError(({ graphQLErrors }) => {
+    console.log("Tried to delete master todo");
+    if (
+      (graphQLErrors![0] as GraphQLError & { errorType: string }).message ===
+      "DynamoDB:ConditionalCheckFailedException"
+    ) {
+    }
+  }),
+  createAuthLink({ url, region, auth }),
+  httpLink,
+]);
 
 const client = new ApolloClient({
   link,

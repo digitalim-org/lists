@@ -1,0 +1,19 @@
+#set($userID = $ctx.identity.username)
+#set($ids = $ctx.args.input.itemID.split("\#"))
+
+{
+    "version": "2017-02-28",
+    "operation": "DeleteItem",
+    "key" : {
+        "userID" : $userID,
+        "itemID" : $util.dynamodb.toDynamoDBJson("$ctx.args.input.itemID")
+    },
+    "condition": {
+        "expression": "userID = :userID AND :listCreated <> :itemCreated",
+        "expressionValues": {
+            ":userID": $util.dynamodb.toDynamoDBJson($userID),
+            ":listCreated": $util.dynamodb.toDynamoDBJson($ids[0]),
+            ":itemCreated": $util.dynamodb.toDynamoDBJson($ids[1])
+        }
+    }
+}
