@@ -4,15 +4,14 @@ import { TextField, IconButton, CircularProgress } from "@material-ui/core";
 import { Add as AddIcon } from "@material-ui/icons";
 import { ADD_TODO, GET_TODOS } from "../../gql";
 import styles from "./AddTodo.module.css";
-import { Todo } from "../../types";
 
 interface AddTodoProps {
-  //   handler(evt: ChangeEvent<HTMLFormElement>, listID?: string): void;
   listID?: string;
 }
 
 const AddTodo = ({ listID }: AddTodoProps) => {
   const [title, setTitle] = useState("");
+  // Leave error for future display in toast/drawer
   const [addTodo, { loading, error }] = useMutation(ADD_TODO, {
     refetchQueries: [GET_TODOS],
   });

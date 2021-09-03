@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import { useQuery } from "@apollo/client";
 import { GET_TODOS } from "../../../gql";
 import {
@@ -6,6 +5,7 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  // Leave for mark-done functionality
   FormControlLabel,
   CircularProgress,
 } from "@material-ui/core";
@@ -22,7 +22,7 @@ interface TodosList {
 }
 
 const TodosListComponent = () => {
-  const { loading, error, data, client } = useQuery<TodosList>(GET_TODOS);
+  const { loading, error, data } = useQuery<TodosList>(GET_TODOS);
 
   if (error) {
     return (
