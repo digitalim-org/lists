@@ -1,4 +1,10 @@
-import { Stack, StackProps, Construct, RemovalPolicy } from "@aws-cdk/core";
+import {
+  Stack,
+  StackProps,
+  Construct,
+  RemovalPolicy,
+  CfnOutput,
+} from "@aws-cdk/core";
 import { Mfa, UserPool } from "@aws-cdk/aws-cognito";
 import { APP_NAME } from "../config";
 
@@ -7,7 +13,7 @@ export class CognitoStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    this.userPool = new UserPool(this, `${APP_NAME}-CognitoUserPool`, {
+    const userPool = new UserPool(this, `${APP_NAME}-CognitoUserPool`, {
       removalPolicy: RemovalPolicy.DESTROY,
       selfSignUpEnabled: true,
       signInAliases: {
@@ -24,6 +30,13 @@ export class CognitoStack extends Stack {
       },
     });
 
-    this.userPool.addClient("WebClient");
+    this.userPool = userPool;
+
+    const userPoolClient = this.userPool.addClient("WebClient");
+
+    new CfnOutput(this, "userPoolID", { value: userPool.userPoolId });
+    new CfnOutput(this, "webClientID", {
+      value: userPoolClient.userPoolClientId,
+    });
   }
 }

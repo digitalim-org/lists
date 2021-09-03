@@ -1,0 +1,16 @@
+#set($input = {})
+#set($listID = $util.defaultIfNull($ctx.args.input.listID, $util.time.nowEpochMilliSeconds()))
+
+$util.qr($input.put("status", $util.defaultIfNull($ctx.args.input.status, "ACTIVE")))
+$util.qr($input.put("title", $ctx.args.input.title))
+$util.qr($input.put("listID", $listID))
+
+{
+    "version": "2017-02-28",
+    "operation": "PutItem",
+    "key" : {
+        "userID" : $util.dynamodb.toDynamoDBJson($ctx.identity.username),
+        "itemID" : $util.dynamodb.toDynamoDBJson("$listID#$util.time.nowEpochMilliSeconds()")
+    },
+    "attributeValues": $util.dynamodb.toMapValuesJson($input)
+}

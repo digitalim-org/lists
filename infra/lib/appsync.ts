@@ -1,5 +1,11 @@
 import { join as pathJoin } from "path";
-import { Stack, StackProps, Construct, RemovalPolicy } from "@aws-cdk/core";
+import {
+  Stack,
+  StackProps,
+  Construct,
+  RemovalPolicy,
+  CfnOutput,
+} from "@aws-cdk/core";
 import {
   GraphqlApi,
   Schema,
@@ -7,6 +13,8 @@ import {
   MappingTemplate,
   PrimaryKey,
   Values,
+  Directive,
+  KeyCondition,
 } from "@aws-cdk/aws-appsync";
 import { Table, AttributeType } from "@aws-cdk/aws-dynamodb";
 import { APP_NAME } from "../config";
@@ -15,6 +23,8 @@ import { UserPool } from "@aws-cdk/aws-cognito";
 type AppSyncStackProps = StackProps & {
   userPool: UserPool;
 };
+
+const mappingTemplateDir = pathJoin(__dirname, "mappingTemplates");
 
 export class AppSyncStack extends Stack {
   constructor(scope: Construct, id: string, props: AppSyncStackProps) {
@@ -34,54 +44,42 @@ export class AppSyncStack extends Stack {
       },
     });
 
+    new CfnOutput(this, "apiEndpoint", { value: api.graphqlUrl });
+
     const todosTable = new Table(this, `${APP_NAME}-DynamoDBTodos`, {
       partitionKey: {
-        name: "id",
+        name: "userID",
         type: AttributeType.STRING,
       },
       sortKey: {
-        name: "createdAt",
+        name: "itemID",
         type: AttributeType.STRING,
       },
       removalPolicy: RemovalPolicy.DESTROY,
     });
 
-    const itemsTable = new Table(this, `${APP_NAME}-DynamoDBItems`, {
-      partitionKey: {
-        name: "id",
-        type: AttributeType.STRING,
-      },
-      removalPolicy: RemovalPolicy.DESTROY,
-    });
+    // todosTable.addGlobalSecondaryIndex({
+    //   indexName: "createdAtIdx",
+    //   partitionKey: {
+    //     name: "id",
+    //     type: AttributeType.STRING,
+    //   },
+    //   sortKey: {
+    //     name: "createdAt",
+    //     type: AttributeType.NUMBER,
+    //   },
+    // });
 
     const todosDataSource = api.addDynamoDbDataSource(
       "TodosDataSource",
       todosTable
     );
-    const itemsDataSource = api.addDynamoDbDataSource(
-      "ItemsDataSource",
-      itemsTable
-    );
 
     todosDataSource.createResolver({
       typeName: "Mutation",
       fieldName: "addTodo",
-      requestMappingTemplate: MappingTemplate.dynamoDbPutItem(
-        PrimaryKey.partition("id").auto(),
-        Values.projecting("input")
-      ),
-      responseMappingTemplate: MappingTemplate.dynamoDbResultItem(),
-    });
-
-    itemsDataSource.createResolver({
-      typeName: "Mutation",
-      fieldName: "addItem",
-      requestMappingTemplate: MappingTemplate.dynamoDbPutItem(
-        PrimaryKey.partition("id")
-          .auto()
-          .sort("createdAt")
-          .is(Date.now().toString()),
-        Values.projecting("input")
+      requestMappingTemplate: MappingTemplate.fromFile(
+        pathJoin(mappingTemplateDir, "addTodo.vtl")
       ),
       responseMappingTemplate: MappingTemplate.dynamoDbResultItem(),
     });
@@ -89,14 +87,9 @@ export class AppSyncStack extends Stack {
     todosDataSource.createResolver({
       typeName: "Query",
       fieldName: "getTodos",
-      requestMappingTemplate: MappingTemplate.dynamoDbScanTable(),
-      responseMappingTemplate: MappingTemplate.dynamoDbResultList(),
-    });
-
-    itemsDataSource.createResolver({
-      typeName: "Query",
-      fieldName: "getItems",
-      requestMappingTemplate: MappingTemplate.dynamoDbScanTable(),
+      requestMappingTemplate: MappingTemplate.fromFile(
+        pathJoin(mappingTemplateDir, "getTodos.vtl")
+      ),
       responseMappingTemplate: MappingTemplate.dynamoDbResultList(),
     });
   }

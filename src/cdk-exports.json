@@ -1,0 +1,10 @@
+{
+  "CognitoStack": {
+    "webClientID": "7jvjqoas0itnpksukn4rj9lg32",
+    "ExportsOutputRefVendiaTechScreenCognitoUserPoolB1FA1CAC0F820C2B": "us-east-1_gfrLR9dWu",
+    "userPoolID": "us-east-1_gfrLR9dWu"
+  },
+  "AppSyncStack": {
+    "apiEndpoint": "https://y5g7wsdir5aqzpmhogpd3bgva4.appsync-api.us-east-1.amazonaws.com/graphql"
+  }
+}

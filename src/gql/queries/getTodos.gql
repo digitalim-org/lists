@@ -1,0 +1,9 @@
+query GetTodos {
+  getTodos {
+    userID
+    listID
+    itemID
+    title
+    status
+  }
+}
