@@ -11,6 +11,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+### `yarn deploy`
+
+Deploys all CloudFormation stacks and outputs values needed by the front-end into `src/cdk-exports.json`.
+
 ### `yarn start`
 
 Runs the app in the development mode.\
