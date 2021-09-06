@@ -58,18 +58,6 @@ export class AppSyncStack extends Stack {
       removalPolicy: RemovalPolicy.DESTROY,
     });
 
-    // todosTable.addGlobalSecondaryIndex({
-    //   indexName: "createdAtIdx",
-    //   partitionKey: {
-    //     name: "id",
-    //     type: AttributeType.STRING,
-    //   },
-    //   sortKey: {
-    //     name: "createdAt",
-    //     type: AttributeType.NUMBER,
-    //   },
-    // });
-
     const todosDataSource = api.addDynamoDbDataSource(
       "TodosDataSource",
       todosTable
