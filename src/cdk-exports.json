@@ -1,10 +1,15 @@
 {
+  "CloudFrontStack": {
+    "ExportsOutputFnGetAttVendiaTechScreenS3DeploymentBucket97D364EFArn5A5B064A": "arn:aws:s3:::cloudfrontstack-vendiatechscreens3deploymentbucke-7y5zv5ooeapb",
+    "ExportsOutputRefVendiaTechScreenS3DeploymentBucket97D364EF21105CEB": "cloudfrontstack-vendiatechscreens3deploymentbucke-7y5zv5ooeapb",
+    "ExportsOutputRefVendiaTechScreenCloudFrontDistribution17C3CB25CC1AD9F9": "E38KFQDLJP99CN"
+  },
   "CognitoStack": {
-    "webClientID": "7jvjqoas0itnpksukn4rj9lg32",
-    "ExportsOutputRefVendiaTechScreenCognitoUserPoolB1FA1CAC0F820C2B": "us-east-1_gfrLR9dWu",
-    "userPoolID": "us-east-1_gfrLR9dWu"
+    "webClientID": "77gblkg49jurq96o6bod61l57",
+    "ExportsOutputRefVendiaTechScreenCognitoUserPoolB1FA1CAC0F820C2B": "us-east-1_10tpGTw0M",
+    "userPoolID": "us-east-1_10tpGTw0M"
   },
   "AppSyncStack": {
-    "apiEndpoint": "https://y5g7wsdir5aqzpmhogpd3bgva4.appsync-api.us-east-1.amazonaws.com/graphql"
+    "apiEndpoint": "https://iydjoyl3jbfslhxnairzd2kpui.appsync-api.us-east-1.amazonaws.com/graphql"
   }
 }

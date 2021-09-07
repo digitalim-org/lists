@@ -46,30 +46,32 @@ const TodosListComponent = () => {
       <AmplifySignOut />
       <Card className={styles.card}>
         {loading && <CircularProgress />}
-        {Object.entries(todos).map(([_, todoList]) => {
-          // All the todos in this list have the same listID
-          const listID = todoList[0].listID;
+        {!loading && Object.keys(todos).length === 0
+          ? "No TODOS. Please add one."
+          : Object.values(todos).map((todoList) => {
+              // All the todos in this list have the same listID
+              const listID = todoList[0].listID;
 
-          return (
-            <Accordion key={listID}>
-              {todoList.map((todo, idx) =>
-                idx === 0 ? (
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    key={todo.itemID}
-                  >
-                    <TodoComponent {...todo} />
-                  </AccordionSummary>
-                ) : (
-                  <AccordionDetails key={todo.itemID}>
-                    <TodoComponent {...todo} />
-                  </AccordionDetails>
-                )
-              )}
-              <AddTodo listID={listID} />
-            </Accordion>
-          );
-        })}
+              return (
+                <Accordion key={listID}>
+                  {todoList.map((todo, idx) =>
+                    idx === 0 ? (
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        key={todo.itemID}
+                      >
+                        <TodoComponent {...todo} />
+                      </AccordionSummary>
+                    ) : (
+                      <AccordionDetails key={todo.itemID}>
+                        <TodoComponent {...todo} />
+                      </AccordionDetails>
+                    )
+                  )}
+                  <AddTodo listID={listID} />
+                </Accordion>
+              );
+            })}
       </Card>
       <AddTodo />
     </div>
