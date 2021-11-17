@@ -1,11 +1,9 @@
-# Vendia Tech Screen
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Lists
 
 ## Setup
 
 1. (Install Node.js)[https://nodejs.org/en/download/]
-2. `npm i -g cdk`
+2. `yarn && (cd ./infra && yarn)`
 
 ## Available Scripts
 
